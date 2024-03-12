@@ -1,0 +1,83 @@
+---
+title: "House Sales Data Analysis"
+author: "sirius_ife"
+date: "2024-03-06"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+
+```{r setup, include=FALSE}
+# Load necessary packages
+library(tidyverse)
+library(lubridate)
+library(readxl) 
+library(psych)
+```
+
+# Importing the Dataset 
+
+```{r import-data}
+# Read the Excel file
+HouseData <- read_excel("HouseData.xlsx")
+
+# Convert to tibble
+house <- as_tibble(HouseData)
+```
+
+# ETL (Extract, Transform & Load)
+
+```{r etl}
+# Extracting and transforming date column
+house$date <- substr(house$date, 1, 8)
+house$date <- ymd(house$date)
+
+# Converting waterfront to factor
+house$waterfront <- as_factor(house$waterfront)
+```
+
+# Exploratory Data Analysis (EDA)
+
+```{r eda}
+# Summary statistics
+summary(house)
+
+# Descriptive statistics
+describe(house)
+```
+
+# Checking Correlation
+
+```{r correlation}
+# Plotting relationship between price and log(sqft_living)
+house %>% 
+  subset(year(date) == 2014) %>% 
+  ggplot(aes(y = price, x = log(sqft_living))) +
+  geom_point() + 
+  theme_light() + 
+  labs(x = "Land value (transformed)",
+       y = "Structure Cost (USD)",
+       title = "Relationship between land value and structure cost")
+
+# Correlation matrix
+cor(house[, c('price', 'sqft_living', 'sqft_lot')])
+```
+
+Both `sqft_living` and `sqft_lot` are positively correlated with `price`.
+
+# Simple Regression Model: Price / sqft_living
+
+```{r simple-regression}
+lm1 <- lm(price ~ sqft_living, data = house)
+summary(lm1)
+```
+
+# Multiple Regression Model: Price / sqft_living + sqft_lot
+
+```{r multiple-regression}
+lm2 <- lm(price ~ sqft_living + sqft_lot, data = house)
+summary(lm2)
+```
+
+`lm2` has a higher R-squared value of 0.4305, indicating that it is a better model for predicting price.
