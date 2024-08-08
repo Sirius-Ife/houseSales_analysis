@@ -1,4 +1,3 @@
-```markdown
 # House Sales Data Analysis
 
 The House Sales Data Analysis project focuses on analyzing and gaining insights from a dataset of house sales transactions. The project includes Extract, Transform, Load (ETL) processes, Exploratory Data Analysis (EDA), and regression analysis to understand the relationship between house prices and square footage of living space.
@@ -40,4 +39,3 @@ To use this project, clone the repository to your local machine and follow the i
 
 Contributions to the House Sales Data Analysis project are welcome! If you have suggestions for improvements, new analysis techniques, or additional features, please open an issue or submit a pull request on GitHub.
 
-```
